@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["jsonProtocol"]
+}
+
+datasource db {
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
+}
+
+model Player {
+    id            String @id @default(cuid())
+    name          String @unique
+    currentPlanet String
+    travelPlanet  String?
+    hold          Hold   @relation(fields: [id], references: [id])
+}
+
+model Hold {
+    id        String  @id @default(cuid())
+    ore       Int
+    meds      Int
+    luxury    Int
+    weapons   Int
+    food      Int
+    machinery Int
+    tech      Int
+    player    Player?
+}
+
+model Travel {
+    id     Int    @id @default(1)
+    finish String
+}
+
+model Planet {
+    id           Int       @id @default(autoincrement())
+    resourcesId  String    @unique
+    distanceId   String    @unique
+    name         String    @unique
+    desctription String
+    habitability Int
+    size         Int
+    industry     Int
+    science      Int
+    resources    Resources @relation(fields: [resourcesId], references: [id])
+    distance     Distance  @relation(fields: [distanceId], references: [id])
+}
+
+model Resources {
+    id        String  @id @default(cuid())
+    planet    Planet?
+    ore       Int
+    meds      Int
+    luxury    Int
+    weapons   Int
+    food      Int
+    machinery Int
+    tech      Int
+}
+
+model Distance {
+    id          String  @id @default(cuid())
+    belebasV    Int
+    biamV       Int
+    doamV       Int
+    ealiaV      Int
+    grotesI     Int
+    holoquaIV   Int
+    ipelupII    Int
+    laracorII   Int
+    luwV        Int
+    metatolIV   Int
+    mivimII     Int
+    notoqumII   Int
+    quimalmVI   Int
+    quimaollIII Int
+    quimaquaVI  Int
+    suveIII     Int
+    waxapipV    Int
+    yoraquaI    Int
+    zumoroII    Int
+    planet      Planet?
+}
