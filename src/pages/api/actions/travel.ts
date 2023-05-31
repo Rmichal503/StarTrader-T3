@@ -29,6 +29,9 @@ export default async function handler(req:NextApiRequest,res:NextApiResponse){
         const player = await prisma.player.findUnique({
             where:{
                 name:'Bonzo'
+            },
+            include:{
+                hold:true
             }
         })
         console.log(player);
@@ -40,7 +43,8 @@ export default async function handler(req:NextApiRequest,res:NextApiResponse){
                 name: 'Bonzo'
             },
             data:{
-                currentPlanet:'traveling'
+                currentPlanet:'traveling',
+                travelPlanet: 'suveIII'
             }
         })
     }
