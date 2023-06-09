@@ -2,7 +2,8 @@ import type{ NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "~/server/db";
 
 export default async function handler(req:NextApiRequest,res:NextApiResponse){
-    const {travel} = req.body
+    const {travel,arrival} = req.body
+    console.log('travel api',req.body);
     if(req.method === 'POST'){
         await prisma.player.create({
          data:{
@@ -38,14 +39,27 @@ export default async function handler(req:NextApiRequest,res:NextApiResponse){
         res.status(200).json({player})
     }
     if(req.method === 'PUT'){
-        await prisma.player.update({
-            where:{
-                name: 'Bonzo'
-            },
-            data:{
-                currentPlanet:'traveling',
-                travelPlanet: 'suveIII'
-            }
-        })
+        if(arrival === ''){
+            await prisma.player.update({
+                where:{
+                    name: 'Bonzo'
+                },
+                data:{
+                    currentPlanet:'traveling',
+                    travelPlanet: travel
+                }
+            })
+        }
+        if(travel === ''){
+            await prisma.player.update({
+                where:{
+                    name: 'Bonzo'
+                },
+                data:{
+                    currentPlanet:arrival,
+                    travelPlanet: ''
+                }
+            })
+        }
     }
 }

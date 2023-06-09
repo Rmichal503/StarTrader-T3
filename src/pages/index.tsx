@@ -1,21 +1,23 @@
 import axios from "axios";
 import { type NextPage } from "next";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import CountdownTimer from "~/components/CountdownTimer.component";
 import Travel from "~/components/Travel";
+import { PlanetContext } from "~/context/planetContext";
 
 const Home: NextPage = () => {
   const [status,setStatus] = useState('')
-  useEffect(() => {
-    const travelStatus = async ()=>{
-      const res = await axios.get('/api/actions/travel');
-      const {player} = res.data
-      console.log(res.data);
-    }
-    travelStatus()
-  }, [])
-  
+  const {planetState} = useContext(PlanetContext)
+  // useEffect(() => {
+  //   const travelStatus = async ()=>{
+  //     const res = await axios.get('/api/actions/travel');
+  //     const {player} = res.data
+  //     console.log(res.data);
+  //   }
+  //   travelStatus()
+  // }, [])
+  console.log(planetState);
   return (
     <>
       <Head>

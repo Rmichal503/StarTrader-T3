@@ -1,17 +1,37 @@
+import axios from "axios";
 import { useRouter } from "next/router";
+import { useContext } from "react";
 import { useTimer } from "react-timer-hook";
+import { PlanetContext } from "~/context/planetContext";
 
 interface MyTimer {
     expiryTimestamp : Date
 }
 
 export default function MyTimer({ expiryTimestamp }:MyTimer) {
+  
+  const finishTravel = async()=>{
+    const {data} = await axios.get('api/actions/travel');
+    const {player} = data;
+    console.log('player context',player);
+    // setPlanetState(player?.travelPlanet)
+    await axios.put('api/actions/travel',{
+        arrival: player?.travelPlanet
+    })
+    // router.reload()
+}
+
+  const {setFinishTravelTo} = useContext(PlanetContext)
     const router = useRouter()
     const {
       seconds,
       minutes,
       hours,
-    } = useTimer({ expiryTimestamp, onExpire: () => router.reload() });
+    } = useTimer({ expiryTimestamp, onExpire: () => {
+      finishTravel()
+      router.reload()
+    } 
+    });
   
   
     return (
